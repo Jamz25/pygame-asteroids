@@ -46,6 +46,8 @@ class Player:
         self.position += pygame.Vector2(x_change, y_change)
         self.position.x %= SCREEN_WIDTH
         self.position.y %= SCREEN_HEIGHT
+        if pygame.Vector2(x_change, y_change) != pygame.Vector2(0, 0):
+            pygame.draw.rect(screen, (255, 0, 0), (self.position + pygame.Vector2(x_change, y_change).normalize()*35, (1, 1)))
 
     def draw(self):
         rotated_sprite = pygame.transform.rotate(self.sprite, self.angle)
@@ -59,10 +61,8 @@ def clamp(val, minv, maxv):
 
 def lerp(value, destination, weight):
     lerped = round(value + weight * (destination - value), 3)
-    if lerped < destination + 0.01 and lerped > destination - 0.01:
-        return destination
-    else:
-        return lerped
+    if (lerped < destination + 0.01 and lerped > destination - 0.01): return destination
+    return lerped
 
 player = Player((SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), 3, 3)
 
